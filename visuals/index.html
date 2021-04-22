@@ -44,7 +44,7 @@
 
 <body>
     <!-- Add heading for the visualization -->
-	
+
 	<!-- Create dropdown element here. Options should be added after reading in game file, they should not be created here.-->
 	<div>
         Select Board Game:
@@ -56,7 +56,7 @@
 
     <script>
 
-	    var gameData = d3.csv('ratings-by-country.csv');
+	    var gameData = d3.csv('rt.csv');
         var worldmap = d3.json('./USA.geo.json');
         var defaultGame = '6 nimmt!';
         var COUNTRY, GAME, AVG_RATING, NUM_OF_USERS;
@@ -99,7 +99,7 @@
             // enter code to call ready() with required arguments
             values => (ready(null, values[0], values[1]))
         );
-		
+
 		// this function should be called once the data from files have been read
 		// world: topojson from world_countries.json
 		// gameData: data from ratings-by-country.csv
@@ -125,7 +125,7 @@
                 createMapAndLegend(world, gameData, d3.select(this).node().value);
             })
 
-            // create Choropleth with default option. Call createMapAndLegend() with required arguments. 
+            // create Choropleth with default option. Call createMapAndLegend() with required arguments.
             createMapAndLegend(world, gameData, defaultGame);
         }
 
