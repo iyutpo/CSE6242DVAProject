@@ -81,7 +81,7 @@
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/queue.v1.min.js"></script>
 <script src="https://d3js.org/topojson.v1.min.js"></script>
-<script type="text/javascript" src="../lib/d3-tip.min.js"></script>
+<script src="/lib/d3-tip.min.js"></script>
 <script>
 var format = d3.format(",");
 
@@ -90,7 +90,7 @@ var tip = d3.tip()
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function(d) {
-              return "<strong>Country: </strong><span class='details'>" + d.properties.name + "<br></span>" + "<strong>Population: </strong><span class='details'>" + format(d.population) +"</span>";
+              return "<strong>State: </strong><span class='details'>" + d.properties.name + "<br></span>" + "<strong>Average house price: </strong><span class='details'>" + format(d.price) +"</span>";
             })
 
 var margin = {top: 0, right: 0, bottom: 0, left: 0},
@@ -116,6 +116,7 @@ queue()
     .await(ready);
 	
 
+svg.call(tip);
 
 				   
 function ready(error, data, price) {
@@ -142,6 +143,7 @@ function ready(error, data, price) {
         .style("stroke","white")
         .style('stroke-width', 0.3)
         .on('mouseover',function(d){
+		  
           tip.show(d);
 
           d3.select(this)
