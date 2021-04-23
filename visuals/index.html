@@ -5,9 +5,11 @@
 	<h3>Average Rating of Board Games Across the World</h3>
     <!-- import required libraries here -->
     <script type="text/javascript" src="./lib/d3.v5.min.js"></script>
+    <script src="https://d3js.org/queue.v1.min.js"></script>
     <script type="text/javascript" src="./lib/d3-dsv.min.js"></script>
     <script type="text/javascript" src="./lib/d3-legend.min.js"></script>
-<!--    <script type="text/javascript" src="../lib/d3-tip.min.js"></script>-->
+    <script type="text/javascript" src="./lib/topojson.v2.min.js"></script>
+    <script type="text/javascript" src="./lib/d3-tip.min.js"></script>
 	<style>
 		/* define CSS rules here */
 	    #tooltip {
@@ -45,193 +47,87 @@
 <body>
     <!-- Add heading for the visualization -->
 
-	<!-- Create dropdown element here. Options should be added after reading in game file, they should not be created here.-->
-	<div>
-        Select Board Game:
-        <select id="selectButton"></select>
-    </div>
-
     <!-- append visualization svg to this div-->
     <div id="container" class="svg-container"></div>
 
     <script>
-
-	    var gameData = d3.csv('rt.csv');
-        var worldmap = d3.json('./USA.geo.json');
-        var defaultGame = '6 nimmt!';
-        var COUNTRY, GAME, AVG_RATING, NUM_OF_USERS;
-
 		// enter code to define margin and dimensions for svg
-		var w = 1400,
-            h = 700;
-		var margin = {top: 10, right: 100, bottom: 30, left: 30},
-            width = 460 - margin.left - margin.right,
-            height = 400 - margin.top - margin.bottom;
+		var margin = {top: 0, right: 0, bottom: 0, left: 0},
+            width = 1960 - margin.left - margin.right,
+            height = 1500 - margin.top - margin.bottom;
 
-		// enter code to create svg
-        svg = d3.select("div#container")
+		// Set tooltips
+        var format = d3.format(",");
+        var tip = d3.tip()
+                    .attr('class', 'd3-tip')
+                    .offset([-10, 0])
+                    .html(function(d) {
+                        return "<strong>State: </strong><span class='details'>" + d.properties.name +
+                          "<br></span>" + "<strong>Average house price: </strong>" +
+                          "<span class='details'>" + format(d.price) +"</span>";
+                    })
+
+        // define color here:
+        var color = d3.scaleThreshold()
+                      .domain([100000,150000,200000,250000,300000,350000,400000,450000,500000,600000])
+                      .range(["rgb(247,251,255)", "rgb(222,235,247)", "rgb(198,219,239)",
+                          "rgb(158,202,225)", "rgb(107,174,214)", "rgb(66,146,198)",
+                          "rgb(33,113,181)","rgb(8,81,156)","rgb(8,48,107)","rgb(3,19,43)"]);
+
+        // define path here:
+        var path = d3.geoPath();
+
+        // define svg here:
+        var svg = d3.select("body")
                     .append("svg")
-                    .style("background-color","#c9e8fd")
-                    .attr("viewBox", "0 0 " + w + " " + h);
+                    .attr("width", width)
+                    .attr("height", height)
+                    .append('g')
+                    .attr('class', 'map');
 
-		// enter code to create color scale
-        var redColors = ['#F8A88F', '#F6886F', '#DD5650', '#B13E43'];
-        var quantileScale = d3.scaleQuantile().range(redColors);
+        queue().defer(d3.json, "us.json")
+               .defer(d3.csv, "rt.csv")
+               .await(ready);
 
-		// enter code to define tooltip
-        var tooltip = d3.select("body")
-                        .append("div")
-                        .style("height", "100px")
-                        .style("width", "200px")
-                        .style("position", "absolute")
-                        .style('visibility', 'hidden')
-                        .attr('id', 'tooltip')
-                        .style("background-color", "grey")
-                        .html('<div id="tipDiv">Country: </div>');
+        svg.call(tip);
 
-		// enter code to define projection and path required for Choropleth
-        var projection = d3.geoMercator().translate([w/2, h/2]);
-        var path = d3.geoPath().projection(projection);
-
-        // define any other global variables
-
-        Promise.all([worldmap, gameData]).then(
-            // enter code to call ready() with required arguments
-            values => (ready(null, values[0], values[1]))
-        );
 
 		// this function should be called once the data from files have been read
-		// world: topojson from world_countries.json
-		// gameData: data from ratings-by-country.csv
-        function ready(error, world, gameData) {
-            // enter code to extract all unique games from gameData
-            var uniqueGame = d3.map(gameData, function(d) { return d.Game; }).keys();
-            uniqueGame.sort();              // inplace sorting
+        function ready(error, map, rtData) {
+            
+            map2 = topojson.feature(map, map.objects.states).features;
+            var rtByState = {};
 
-            // enter code to append the game options to the dropdown
-            d3.select('#selectButton')
-              .selectAll('myOptions')
-              .data(uniqueGame)
-              .enter()
-              .append('option')
-              .text(function(d) { return d; })
-              .attr('value', function(d) { return d; });
+            rtData.forEach(function(d) { rtByState[d.state] = +d.mean; });
+            map2.forEach(function(d) { d.mean = rtByState[d.properties.name] });
 
-            createMapAndLegend(world, gameData, defaultGame);
+            svg.append("g")
+               .attr("class", "countries")
+               .selectAll("path")
+               .data(map2)
+               .enter().append("path")
+               .attr("d", path)
+               .style("fill", function(d) { return color(rtByState[d.properties.name]); })
+               .style('stroke', 'white')
+               .style('stroke-width', 1.5)
+               .style("opacity",0.8)
+                // tooltips
+               .style("stroke","white")
+               .style('stroke-width', 0.3)
+               .on('mouseover',function(d){
+                   tip.show(d);
+                   d3.select(this)
+                     .style("opacity", 1)
+                     .style("stroke","white")
+                     .style("stroke-width",3);
+               }).on('mouseout', function(d){
+                   tip.hide(d);
+                   d3.select(this)
+                     .style("opacity", 0.8)
+                     .style("stroke","white")
+                     .style("stroke-width",0.3);
+               });
 
-
-            // event listener legend when selection changes. Call createMapAndLegend() with required arguments.
-            d3.select('#selectButton').on('change', function(d) {
-                createMapAndLegend(world, gameData, d3.select(this).node().value);
-            })
-
-            // create Choropleth with default option. Call createMapAndLegend() with required arguments.
-            createMapAndLegend(world, gameData, defaultGame);
-        }
-
-		// this function should create a Choropleth and legend using the world and gameData arguments for a selectedGame
-		// also use this function to update Choropleth and legend when a different game is selected from the dropdown
-        function createMapAndLegend(world, gameData, selectedGame){
-			let ratingDict = {}, numUsersDict = {}, allColors = [], numOfUsers = [], usefulColors = [];
-			let makeupCountry = [];
-			function dataProcessing() {
-			    // Generate 'makeupCountry' that contains all countries:
-			    for (let i = 0; i < world.features.length; i++) {
-			        if (!(makeupCountry.includes(world.features[i].properties.name))) { makeupCountry.push(world.features[i].properties.name); }
-                }
-			    for (let i = 0; i < gameData.length; i++) {
-                    if (gameData[i].Game === selectedGame) {
-                        if (parseFloat(gameData[i]['Average Rating']) === null) { allColors.push(0); }
-                        else { allColors.push(parseFloat(gameData[i]['Average Rating'])); }
-                    }
-                    if (!(makeupCountry.includes(gameData[i].Country))) { makeupCountry.push(gameData[i].Country); }
-                }
-			    // Process 'allColors':
-			    for (let i = 0; i < makeupCountry.length; i++) {
-                    for (let j = 0; j < gameData.length; j++) {
-                        if (gameData[j].Game === selectedGame) { allColors.push(gameData[j]['Average Rating']); }
-                    }
-			    }
-			    console.log('test: ', allColors, allColors.length);
-			    for (let i = 0; i < world.features.length; i++) {
-                    ratingDict[world.features[i].properties.name] = null;
-                    numUsersDict[world.features[i].properties.name] = null;
-                    world.features[i].properties['rating'] = null;
-                    world.features[i].properties['number users'] = null;
-                }
-                for (let i = 0; i < world.features.length; i++) {
-                    for (let j = 0; j < gameData.length; j++) {
-                        if (gameData[j].Country === world.features[i].properties.name && gameData[j].Game === selectedGame) {
-                            ratingDict[world.features[i].properties.name] = parseFloat(gameData[j]['Average Rating']);
-                            numUsersDict[world.features[i].properties.name] = parseFloat(gameData[j]['Number of Users']);
-                            world.features[i].properties['rating'] = parseFloat(gameData[j]['Average Rating']);
-                            world.features[i].properties['number users'] = parseFloat(gameData[j]['Number of Users']);
-                            world.features[i].properties['color'] = parseFloat(gameData[j]['Average Rating']);
-                            if (parseFloat(gameData[j]['Average Rating']) > 0) {
-                                usefulColors.push(parseFloat(gameData[j]['Average Rating']));
-                            }
-                        }
-                    }
-                }
-                quantileScale.domain(allColors);                // allColors contains all ratings
-            }
-			dataProcessing();
-            console.log('see here: ', selectedGame, allColors, world.features);
-            // draw map: http://jsfiddle.net/spanndemic/5JRMt/
-            // https://www.d3-graph-gallery.com/graph/line_select.html
-            // https://stackoverflow.com/questions/30035932/how-do-i-use-this-javascript-variable-in-html
-
-            var appending = svg.selectAll('path')
-                               .data(world.features)
-            appending.enter()
-                     .append('path')
-                     .on('mouseover', function(data, i) {
-                         COUNTRY = data.properties.name;
-                         GAME = d3.select('#selectButton').node().value;
-                         AVG_RATING = data.properties.rating ? data.properties.rating : 'N/A';
-                         NUM_OF_USERS = data.properties['number users'] ? data.properties['number users'] : 'N/A';
-                         document.getElementById('tipDiv').innerText = ('Country: ' + COUNTRY + '\n' +
-                                                                        'Game: ' + GAME + '\n' +
-                                                                        'Avg Rating: ' + AVG_RATING + '\n' +
-                                                                        'Number of Users: ' + NUM_OF_USERS);
-                         tooltip.style('visibility', 'visible');
-                         var tipSVG = d3.select('#tipDiv')
-                                        .append('svg');
-                         tipSVG.append('rect')
-                               .data(data)
-                               .attr('fill', 'steelblue')
-                               .attr("y", 10)
-                               .attr("height", 30)
-                               .transition()
-                               .duration(100)
-                               .attr("width", 100);
-                     })
-                    .on('mouseout', function(d, i, n) {
-                        return tooltip.style('visibility', 'hidden');
-                    })
-                    .on('mousemove', function(){
-                        return tooltip.style("top", (d3.event.pageY-20)+"px")
-                            .style("left",(d3.event.pageX-50)+"px").style('visibility', 'visible');
-                    })
-            appending.transition()
-                     .duration(200)
-                     .attr('d', path)
-                     .attr('fill', function(d, i) { return d.properties.rating ? quantileScale(d.properties.rating) : 'grey'; })
-            appending.exit().remove();
-            svg.append('g')
-               .attr('class', 'legendQuant')
-               .attr("transform","translate("+ (width + 900) + ",20)");
-            var legend = d3.legendColor()
-                           .labelFormat(d3.format('.2f'))
-                           .useClass(true)
-                           .shape('rect')
-                           .orient('vertical')
-                           .scale(quantileScale);
-            svg.select('.legendQuant').call(legend);
-            svg.selectAll('.swatch')
-                .style('fill', function(d, i) {
-                    return redColors[i];
-                })
         }
 
     </script>
@@ -239,3 +135,12 @@
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
