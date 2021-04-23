@@ -1,146 +1,122 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <meta charset="utf-8">
+<html>
 <head>
-	<!-- add title -->
-	<h3>Average Rating of Board Games Across the World</h3>
-    <!-- import required libraries here -->
-    <script type="text/javascript" src="./lib/d3.v5.min.js"></script>
-    <script src="https://d3js.org/queue.v1.min.js"></script>
-    <script type="text/javascript" src="./lib/d3-dsv.min.js"></script>
-    <script type="text/javascript" src="./lib/d3-legend.min.js"></script>
-    <script type="text/javascript" src="./lib/topojson.v2.min.js"></script>
-    <script type="text/javascript" src="./lib/d3-tip.min.js"></script>
-	<style>
-		/* define CSS rules here */
-	    #tooltip {
-                position: absolute;
-                width: 200px;
-                height: auto;
-                padding: 10px;
-                background-color: white;
-                -webkit-border-radius: 10px;
-                -moz-border-radius: 10px;
-                border-radius: 10px;
-                -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
-                -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
-                box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
-                pointer-events: none;
-        }
-        #tooltip.hidden {
-                display: none;
-        }
-        #tooltip p {
-                margin: 0;
-                font-family: sans-serif;
-                font-size: 16px;
-                line-height: 20px;
-                color: white;
-        }
-        #tipDiv {
-            color: white;
-            font-size: 14px;
-        }
-	</style>
+
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400italic,600italic,700italic,200,300,400,600,700,900">
+<script src="https://d3js.org/queue.v1.min.js"></script>
+<script src="./lib/topojson.v2.min.js"></script>
+<script src="https://unpkg.com/d3-simple-slider"></script>
+<!--<script src="https://d3js.org/d3.v3.min.js"></script>-->
+<script src="./lib/d3.v5.min.js"></script>
+
+
+<style>
+
+body, h1, h2, h3, p {
+  margin: 0;
+  padding: 0;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 1em;
+  color: #333;
+  font-weight: 400;
+}
+
+#content {
+  margin: 5px;
+  padding: 20px;
+  width: 805px;
+  border: 1px solid #ccc;
+}
+
+#map {
+  margin: 10px 0px 0px 0px;
+  padding: 0px;
+}
+
+h1, h2 {
+  line-height: 1em;
+  font-size: 1.75em;
+  font-weight: 900;
+  color: #000;
+}
+
+h2.year {
+  margin: 10px 0px 0px 0px;
+  font-size: 1.3em;
+  font-weight: 700;
+}
+
+p {
+  margin: 10px 0px 0px 0px;
+}
+
+.county {
+  fill: #fff;
+}
+
+.states {
+  fill: none;
+  stroke: #fff;
+  stroke-linejoin: round;
+}
+
+input {
+  display: block;
+  width: 200px;
+  margin: 10px 0px 0px 0px;
+}
+
+#legend text {
+  font-size: 0.9em;
+  color: #333;
+  font-weight: 400;
+}
+
+.tooltip {
+  position: absolute;
+  padding: 7px;
+  font-size: 0.9em;
+  pointer-events: none;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+
+  -moz-box-shadow:    3px 3px 10px 0px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.25);
+  box-shadow:         3px 3px 10px 0px rgba(0, 0, 0, 0.25);
+}
+
+.tooltip p {
+  margin: 0;
+  padding: 0;
+}
+
+.tooltip table {
+  margin: 0;
+  padding: 0;
+  border-collapse: collapse;
+}
+
+.wide {
+  width: 140px;
+}
+
+</style>
+
 </head>
 
-
 <body>
-    <!-- Add heading for the visualization -->
 
-    <!-- append visualization svg to this div-->
-    <div id="container" class="svg-container"></div>
+<div id="content">
+	<h1>U.S. Daily Cigarette Smoking Rate, 1996-2012</h1>
+	<h2 class="year"></h2>
+	<div class="slider"></div>
+	<div id="map"></div>
+	<p>Source: Institute for Health Metrics and Evaluation.</p>
+</div>
 
-    <script>
-		// enter code to define margin and dimensions for svg
-		var margin = {top: 0, right: 0, bottom: 0, left: 0},
-            width = 1960 - margin.left - margin.right,
-            height = 1500 - margin.top - margin.bottom;
-
-		// Set tooltips
-        var format = d3.format(",");
-        var tip = d3.tip()
-                    .attr('class', 'd3-tip')
-                    .offset([-10, 0])
-                    .html(function(d) {
-                        return "<strong>State: </strong><span class='details'>" + d.properties.name +
-                          "<br></span>" + "<strong>Average house price: </strong>" +
-                          "<span class='details'>" + format(d.price) +"</span>";
-                    })
-
-        // define color here:
-        var color = d3.scaleThreshold()
-                      .domain([100000,150000,200000,250000,300000,350000,400000,450000,500000,600000])
-                      .range(["rgb(247,251,255)", "rgb(222,235,247)", "rgb(198,219,239)",
-                          "rgb(158,202,225)", "rgb(107,174,214)", "rgb(66,146,198)",
-                          "rgb(33,113,181)","rgb(8,81,156)","rgb(8,48,107)","rgb(3,19,43)"]);
-
-        // define path here:
-        var path = d3.geoPath();
-
-        // define svg here:
-        var svg = d3.select("body")
-                    .append("svg")
-                    .attr("width", width)
-                    .attr("height", height)
-                    .append('g')
-                    .attr('class', 'map');
-
-        queue().defer(d3.json, "us.json")
-               .defer(d3.csv, "rt.csv")
-               .await(ready);
-
-        svg.call(tip);
-
-
-		// this function should be called once the data from files have been read
-        function ready(error, map, rtData) {
-            
-            map2 = topojson.feature(map, map.objects.states).features;
-            var rtByState = {};
-
-            rtData.forEach(function(d) { rtByState[d.state] = +d.mean; });
-            map2.forEach(function(d) { d.mean = rtByState[d.properties.name] });
-
-            svg.append("g")
-               .attr("class", "countries")
-               .selectAll("path")
-               .data(map2)
-               .enter().append("path")
-               .attr("d", path)
-               .style("fill", function(d) { return color(rtByState[d.properties.name]); })
-               .style('stroke', 'white')
-               .style('stroke-width', 1.5)
-               .style("opacity",0.8)
-                // tooltips
-               .style("stroke","white")
-               .style('stroke-width', 0.3)
-               .on('mouseover',function(d){
-                   tip.show(d);
-                   d3.select(this)
-                     .style("opacity", 1)
-                     .style("stroke","white")
-                     .style("stroke-width",3);
-               }).on('mouseout', function(d){
-                   tip.hide(d);
-                   d3.select(this)
-                     .style("opacity", 0.8)
-                     .style("stroke","white")
-                     .style("stroke-width",0.3);
-               });
-
-        }
-
-    </script>
+<script type="text/javascript" src="rtMap.js"></script>
 
 </body>
-
 </html>
-
-
-
-
-
-
-
-
-
