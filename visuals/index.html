@@ -7,116 +7,104 @@
 <script src="https://d3js.org/queue.v1.min.js"></script>
 <script src="./lib/topojson.v2.min.js"></script>
 <script src="https://unpkg.com/d3-simple-slider"></script>
-<!--<script src="https://d3js.org/d3.v3.min.js"></script>-->
 <script src="./lib/d3.v5.min.js"></script>
 
+<div id="container">
+  <input id="slider" type="range" min="0" step="1" value="0">
+  <span id="date"></span>
+</div>
 
-<style>
-
-body, h1, h2, h3, p {
-  margin: 0;
-  padding: 0;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 1em;
-  color: #333;
-  font-weight: 400;
-}
-
-#content {
-  margin: 5px;
-  padding: 20px;
-  width: 805px;
-  border: 1px solid #ccc;
-}
-
-#map {
-  margin: 10px 0px 0px 0px;
-  padding: 0px;
-}
-
-h1, h2 {
-  line-height: 1em;
-  font-size: 1.75em;
-  font-weight: 900;
-  color: #000;
-}
-
-h2.year {
-  margin: 10px 0px 0px 0px;
-  font-size: 1.3em;
-  font-weight: 700;
-}
-
-p {
-  margin: 10px 0px 0px 0px;
-}
-
-.county {
-  fill: #fff;
-}
-
-.states {
-  fill: none;
-  stroke: #fff;
-  stroke-linejoin: round;
-}
-
-input {
-  display: block;
-  width: 200px;
-  margin: 10px 0px 0px 0px;
-}
-
-#legend text {
-  font-size: 0.9em;
-  color: #333;
-  font-weight: 400;
-}
-
-.tooltip {
-  position: absolute;
-  padding: 7px;
-  font-size: 0.9em;
-  pointer-events: none;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-
-  -moz-box-shadow:    3px 3px 10px 0px rgba(0, 0, 0, 0.25);
-  -webkit-box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.25);
-  box-shadow:         3px 3px 10px 0px rgba(0, 0, 0, 0.25);
-}
-
-.tooltip p {
-  margin: 0;
-  padding: 0;
-}
-
-.tooltip table {
-  margin: 0;
-  padding: 0;
-  border-collapse: collapse;
-}
-
-.wide {
-  width: 140px;
-}
-
-</style>
 
 </head>
 
 <body>
 
-<div id="content">
-	<h1>U.S. Daily Cigarette Smoking Rate, 1996-2012</h1>
-	<h2 class="year"></h2>
-	<div class="slider"></div>
-	<div id="map"></div>
-	<p>Source: Institute for Health Metrics and Evaluation.</p>
-</div>
 
-<script type="text/javascript" src="rtMap.js"></script>
 
+<!--<script type="text/javascript" src="rtMap.js"></script>-->
+<script>
+	var data = d3.csv('rt.csv');
+	const us = d3.json('us.json');
+	console.log(data, us);
+	// enter code to define margin and dimensions for svg
+	var w = 1400,
+		h = 700;
+	var margin = {top: 10, right: 100, bottom: 30, left: 30},
+		width = 460 - margin.left - margin.right,
+		height = 400 - margin.top - margin.bottom;
+
+	svg = d3.select("#mapsvg_pr");
+
+	var startDate = new Date("2020-01-01");
+	var endDate = new Date("2021-01-26");
+	var millisecondsPerDay = 24 * 60 * 60 * 1000;
+	var availableDays = Math.ceil((endDate - startDate) / millisecondsPerDay);
+
+	d3.select("#slider")
+	.attr("max", availableDays)
+	.on("input", function() {
+		update(+this.value);
+	});
+	var niceFormat = d3.timeFormat("%B %d, %Y");
+	var fileFormat = d3.timeFormat("%Y-%m-%d");
+	d3.select("#date").text(niceFormat(startDate));
+
+	// enter code to define projection and path required for Choropleth
+	// var projection = d3.geoMercator().translate([w/2, h/2]);
+	// var path = d3.geoPath().projection(projection);
+	Promise.all([us, data]).then(
+		// enter code to call ready() with required arguments
+		values => (ready(null, values[0], values[1]))
+	);
+
+	function update(selection) {
+		var currentDate = new Date(+startDate + (millisecondsPerDay * selection));
+		let us = d3.json('us.json');
+		d3.select("#date").text(niceFormat(currentDate), us);
+		console.log("Loading file", fileFormat(currentDate));
+		d3.csv("./data/" + fileFormat(currentDate) + ".csv").then(function(data) {
+			ready(null, us, data);
+		});
+	}
+
+	function ready(error, data) {
+		console.log("ready function: ", data);
+		const projection = d3.geoAlbersUsa()
+							.translate([width / 2, height / 2]) // translate to center of screen
+							.scale([1280]); // scale things down so see entire US
+		const path = d3.geoPath().projection(projection);
+
+		svg.append("g")
+			  .attr("class", "counties")
+			.selectAll("path")
+			.data(data)
+			.enter().append("path")
+			  .attr("fill", 'black')
+
+	}
+
+
+
+</script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
