@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Team032 Project</title>
-    <script src="libraries/d3.v5.js"></script>
-    <script src="libraries/d3.v5.min.js"></script>
-    <script src="libraries/topojson.js"></script>
-    <script src="libraries/d3-tip.min.js"></script>
-    <script src="libraries/d3-legend.min.js"></script>
-    <script src="libraries/d3-legend.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400italic,600italic,700italic,200,300,400,600,700,900">
+    <script src="https://d3js.org/queue.v1.min.js"></script>
+    <script src="./lib/topojson.v2.min.js"></script>
+    <script src="https://unpkg.com/d3-simple-slider"></script>
+    <script src="./lib/d3.v5.min.js"></script>
     <script src="main.js"></script>
 
-    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Source+Sans+Pro&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="rtMap.js"></script>
     <link rel="stylesheet" href="main.css">
 </head>
 
@@ -27,17 +28,17 @@
         <div id="content-wrap">
         <!---------------------- For Nav Bar -------------------------->
         <div class="topnav">
-            <a href="index.html">Main page</a>
             <a href="about.html">About</a>
             <a href="#">Demo</a>
             <a href="prediction.html">Prediction for 2021</a>
+            <a href="index.html">Visualization for 2020</a>
         </div>
         <!---------------------- Map -------------------------->
         <div id="usmap">
-            <p>This is a mapppppppppppp</p>
             <!-- state name == chart, select date == timeline -->
+
             <div class ="tooltip">
-                <div class="titile"> 
+                <div class="title">
                     <div class = "name"></div>
                     <div class = "date"></div>
                 </div>
@@ -45,23 +46,25 @@
         </div>
         <!---------------------- Timeline -------------------------->
         <div id="timelineContainer">
-            <p>hi, here is a timeline~~~~~~~~~~~~</p>
+            <input id="timeline" type="range" min="0" max="11" value="0" step="1" /><br>
+            <span id="date"></span>
         </div>
         <!---------------------- Chartbox -------------------------->
         <div id="chartbox">
+            <h2>State: WA</h2>
             <div class="chart">
-                <h2>chart1</h2>
-                <p>This chartbox is for unemployment & household income of selected states</p>
+                <img src="pics/chart.png" alt="chart1" style="width:200;height:350px;">
+                <h2>Chart1</h2>
             </div>
               
             <div class="chart">
+                <img src="pics/chart.png" alt="chart1" style="width:200;height:350px;">
                 <h2>chart2</h2>
-                <p>This chartbox is for CPI line chart of selected state</p>
             </div>
               
             <div class="chart">
+                <img src="pics/chart.png" alt="chart1" style="width:200;height:350px;">
                 <h2>chart3</h2>
-                <p>This chartbox is for housemarket line chart of selected state</p>
         </div>
         <!---------------------- All main content above -------------------------->
         </div>

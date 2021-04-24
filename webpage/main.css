@@ -9,18 +9,22 @@
 * {
   box-sizing: border-box;
 }
+h1,h2{
+  font-family: 'Source Sans Pro', sans-serif;
+}
 
 /* Style the header */
 .header {
-  background-color: #f1f1f1;
+  background-color: #b3a369;
   padding: 20px;
-  text-align: center;
+  text-align: left;
+  font-style: italic;
 }
 
 /* Style the top navigation bar */
 .topnav {
   overflow: hidden;
-  background-color:darkgrey;
+  background-color:#ac9a58;
 }
 
 .topnav a {
@@ -29,10 +33,12 @@
   color: #f2f2f2;
   text-align: left;
   padding: 14px 20px;
+  text-decoration: none;
+  font-family: 'Roboto', sans-serif;
 }
 
 .topnav a:hover {
-  background-color:lightgrey;
+  background-color:#b3a369;
   color: black;
 }
 
@@ -43,7 +49,6 @@
   height: 400px;
   margin-right: auto;
   margin-left: auto;
-  background-color:lightskyblue;
   }
 
 /* style for timeline */
@@ -53,30 +58,60 @@
   height: 70px;
   margin-right: auto;
   margin-left: auto;
-  background-color:lightyellow;
-
+  text-align:center;
 }
+#timeline{
+  width:70%;
+  margin-top: 30px;
+}
+
 /* style for chart */
+.chartbox{
+  position: relative;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+}
 .chart {
-  float: left;
+  float:left;
   width: 33.33%;
   height: 400px;
   padding: 15px;
   
 }
 
+.chartbox:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.column {
+  float: left;
+  width: 25%;
+  padding: 20px;
+}
+.column p{
+  font-family: 'Roboto', sans-serif;
+  text-align: justify;
+  font-size:medium;
+  word-spacing: big;
+}
+/* Clear floats after the columns */
 .row:after {
   content: "";
   display: table;
   clear: both;
 }
 
+
 /* style for footer */
 #footer{
   position:fixed;
   bottom:0;
   width:100%;
-  background-color: darkgrey;
+  background-color: #ac9a58;
+  font-family: 'Roboto', sans-serif;
   text-align: center;
 }
 
