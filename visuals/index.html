@@ -10,7 +10,7 @@
 <script src="./lib/d3.v5.min.js"></script>
 
 <div id="container">
-  <input id="slider" type="range" min="0" step="1" value="0">
+  <input id="slider" type="range" min="0" step="1" value="0" max="13">
   <span id="date"></span>
 </div>
 
@@ -36,7 +36,7 @@
             .attr("width", width)
             .attr("height", height);
 
-  var startDate = new Date("2020-01-01");
+  var startDate = new Date("2020-01-09");
   var endDate = new Date("2021-01-26");
   var millisecondsPerDay = 24 * 60 * 60 * 1000;
   var availableDays = Math.ceil((endDate - startDate) / millisecondsPerDay);
@@ -51,26 +51,30 @@
   d3.select("#date").text(niceFormat(startDate));
 
   var color = d3.scaleQuantize()
-    .domain([0,3])
-    .range(["#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"]);
-
-  // enter code to define projection and path required for Choropleth
-  Promise.all([us, data]).then(
-      // enter code to call ready() with required arguments
-      values => (ready(null, values[0], values[1]))
-  );
+    .domain([0, 3])        // maximum Rt mean value is about 5.11xxx
+    .range(["#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43",
+      "#F46D00", "#D53E4F", "#9E0142"]);
 
 
+  var isFirst = true;
+  //
+  // Promise.all([us, data]).then(function() {
+  //   values => (ready(null, values[0], values[1]));
+  // });
   function update(selection) {
-    var currentDate = new Date(+startDate + (millisecondsPerDay * selection));
-    let usmap = d3.json('us.json');
-    d3.select("#date").text(niceFormat(currentDate), usmap);
-    console.log("Loading file", fileFormat(currentDate));
-    d3.csv("./data/" + fileFormat(currentDate) + ".csv").then(function(data) {
+      var currentDate = new Date(+startDate + (millisecondsPerDay * selection));
+      let usmap = d3.json('us.json');
+      d3.select("#date").text(niceFormat(currentDate), usmap);
+      console.log("Loading file", fileFormat(currentDate));
+      d3.select('svg').selectAll('.state').remove();      // removing old map here
 
-        ready(null, usmap, data);
+    d3.csv("./data/" + fileFormat(currentDate) + ".csv").then(function(data) {
+        Promise.all([usmap, data]).then(
+          values => (ready(null, values[0], values[1]))
+        );
     });
   }
+
 
   function ready(error, usmap, rt) {
       console.log("ready function: ", usmap);
@@ -91,8 +95,12 @@
         }
       }
       console.log('processed usmap: ', usmap);
+      drawMap(usmap, path);
+  }
 
-      var stateShapes = svg.selectAll(".state")
+
+  function drawMap(usmap, path) {
+    var stateShapes = svg.selectAll(".state")
                           .data(usmap.features)
                           .enter()
                           .append("path")
@@ -101,7 +109,6 @@
                           .attr('fill', function(d) {
                             return color(d.properties.rtMean)
                           })
-
       stateShapes.on('mouseover', function(d) {
         tooltip.transition()
         .duration(250)
@@ -114,10 +121,6 @@
                 .duration(250)
                 .style('opacity', 0)
       });
-
-
-
-  // update(fileFormat(new Date('2020-01-09')));
 
 
 
