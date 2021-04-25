@@ -232,6 +232,7 @@ function ready(error,us, data) {
     .default(dates[0])
     .on('onchange', val => {
      d3.select('p#value-time').text(d3.timeFormat('%m-%Y')(val));
+     console.log('onchange: ', val);
 	  var i;
 	  const min=7
 	  target_date=dates[0]
@@ -302,7 +303,7 @@ function draw_map(data2,map_data,data){
             .style("stroke-width",3);
         })
         .on('mouseout', function(d){
-		console.log(d)
+		// console.log(d)
           tip.hide(d);
           d3.select(this)
             .style("opacity", 0.8)
