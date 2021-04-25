@@ -203,23 +203,38 @@
                        .attr('class', 'legendQuant')
                        .attr("transform","translate("+ (width + 800) + ",20)");
 
-                    if (selectedMetric !== 'Housing Price') {
-                        var legend = d3.legendColor()
-                                   .labelFormat(d3.format('.2f'))
-                                   .useClass(true)
-                                   .shape('rect')
-                                   .orient('vertical')
-                                   .scale(quantileScale);
-                    } else {
-                        var legend = d3.legendColor()
+                    var legend;
+                    if (selectedMetric === 'Housing Price') {
+                        legend = d3.legendColor()
                                    .labelFormat(d3.format('c'))
                                    .useClass(true)
                                    .shape('rect')
                                    .orient('vertical')
                                    .scale(quantileScale);
+                        svg.select('.legendQuant').call(legend)
+                            .append('text').text('Unit: USD')
+                            .attr('font-size', '15px');
+                    } else if (selectedMetric === 'CPI') {
+                        legend = d3.legendColor()
+                                   .labelFormat(d3.format('.2f'))
+                                   .useClass(true)
+                                   .shape('rect')
+                                   .orient('vertical')
+                                   .scale(quantileScale);
+                        svg.select('.legendQuant').call(legend)
+                            .append('text').text('Unit: %')
+                            .attr('font-size', '15px');
+                    } else {
+                        legend = d3.legendColor()
+                                   .labelFormat(d3.format('.2f'))
+                                   .useClass(true)
+                                   .shape('rect')
+                                   .orient('vertical')
+                                   .scale(quantileScale);
+                        svg.select('.legendQuant').call(legend)
+                            .append('text').text('Unit: %')
+                            .attr('font-size', '15px');
                     }
-
-                    svg.select('.legendQuant').call(legend);
                     svg.selectAll('.swatch')
                         .style('fill', function(d, i) {
                             return redColors[i];
