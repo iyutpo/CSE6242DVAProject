@@ -115,4 +115,16 @@ h1,h2{
   text-align: center;
 }
 
-
+.d3-tip {
+    line-height: 1.5;
+    font-weight: 400;
+    font-family:"avenir next", Arial, sans-serif;
+    padding: 6px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border-radius: 1px;
+    pointer-events: none;
+    }
+.details{
+      color:#FFA500;
+    }
