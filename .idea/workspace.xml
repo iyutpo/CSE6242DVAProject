@@ -1,168 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ed1c15a7-efd4-4771-87f8-bae11bd9fa11" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/CSE6242DVAProject.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/State_Real_Estate2020.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Unemployment 2020.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Unemployment rate 2021 1-3.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/combined_data_new.csv" beforeDir="false" afterPath="$PROJECT_DIR$/combined_data_new.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graph_plot.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/graph_plot_combined.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/d3-dsv.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/d3-dsv.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/d3-geo-projection.v2.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/d3-geo-projection.v2.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/d3-legend.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/d3-legend.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/d3-tip.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/d3-tip.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/d3.slider.css" beforeDir="false" afterPath="$PROJECT_DIR$/lib/d3.slider.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/d3.slider.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/d3.slider.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/d3.v5.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/d3.v5.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/topojson.v2.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/topojson.v2.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rt.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/usmap_test.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/.ipynb_checkpoints/DataProcess-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/DataProcess.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/State_Real_Estate2020.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/choropleth.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/combined_data.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/data/20-Apr.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/data/20-Aug.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/data/20-Dec.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/data/20-Feb.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/data/20-Jan.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/data/20-Jul.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/data/20-Jun.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/data/20-Mar.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/data/20-May.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/data/20-Nov.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/data/20-Oct.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/data/20-Sep.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/data/21-Jan.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/data/combined_feb21_prediction.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/data/rt.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/lib/d3-dsv.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/lib/d3-geo-projection.v2.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/lib/d3-legend.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/lib/d3-tip.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/lib/d3.v5.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/lib/topojson.v2.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/ratings-by-country.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/rt.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/rtMap.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/test.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/us.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuals/world_countries.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/DataProcess.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/about.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/data/20-Apr.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/data/20-Aug.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/data/20-Dec.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/data/20-Feb.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/data/20-Jan.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/data/20-Jul.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/data/20-Jun.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/data/20-Mar.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/data/20-May.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/data/20-Nov.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/data/20-Oct.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/data/20-Sep.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/data/21-Jan.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/data/combined_data.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/data/combined_data1.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/data/combined_data_new.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/data/combined_feb21_prediction.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/data/rt.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/data/us-states.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/data/us.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/lib/d3-dsv.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/lib/d3-geo-projection.v2.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/lib/d3-legend.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/lib/d3-tip.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/lib/d3.v5.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/lib/topojson.v2.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/main.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/main.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/note.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/pics/chart.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/pics/map.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/pics/protype.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/prediction.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpage/usmap.json" beforeDir="false" />
+    <list default="true" id="fd44e49a-30f5-4e64-b1c7-7acc54765fd2" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/CSE6242DVAProject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CSE6242DVAProject.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/about.html" beforeDir="false" afterPath="$PROJECT_DIR$/about.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/main.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="HTML File" />
-        <option value="JavaScript File" />
-      </list>
-    </option>
-  </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="JupyterTrust" id="76f4f6fc-f272-4e6e-8566-5c936bf41b53" />
-  <component name="ProjectId" id="1rZmDLDUMNQgeLU72wyPAordJ5c" />
+  <component name="ProjectId" id="1rfrX5GIPmPBnEVig4dieN5Dpbv" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../CSE6242DVAProject-main" />
-  </component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\PSU\15GA\MyCourses\CSE6242DVAProject\CSE6242DVAProject\webpage" />
-      <recent name="D:\PSU\15GA\MyCourses\CSE6242DVAProject\CSE6242DVAProject\webpage\data" />
-    </key>
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="ed1c15a7-efd4-4771-87f8-bae11bd9fa11" name="Default Changelist" comment="" />
-      <created>1619191865349</created>
+      <changelist id="fd44e49a-30f5-4e64-b1c7-7acc54765fd2" name="Default Changelist" comment="" />
+      <created>1619378021907</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1619191865349</updated>
-      <workItem from="1619191866835" duration="4653000" />
-      <workItem from="1619197016897" duration="84673000" />
+      <updated>1619378021907</updated>
+      <workItem from="1619378023187" duration="806000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="2" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="340" y="278" key="FileChooserDialogImpl" timestamp="1619378020070">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="340" y="278" key="FileChooserDialogImpl/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1619378020070" />
-    <state x="132" y="176" key="editAsTableFormatDialogDimension" timestamp="1619230770892">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="132" y="176" key="editAsTableFormatDialogDimension/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1619230770892" />
-    <state x="215" y="229" width="672" height="678" key="search.everywhere.popup" timestamp="1619233033638">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="215" y="229" width="672" height="678" key="search.everywhere.popup/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1619233033638" />
   </component>
 </project>
