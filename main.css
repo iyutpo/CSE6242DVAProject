@@ -52,39 +52,39 @@ h1,h2{
   }
 
 /* style for timeline */
-#timelineContainer{
+/* #timelineContainer{
   position: relative;
   width: 100%;
   height: 70px;
   margin-right: auto;
   margin-left: auto;
   text-align:center;
-}
-#timeline{
+} */
+/* #timeline{
   width:70%;
   margin-top: 30px;
-}
+} */
 
 /* style for chart */
-.chartbox{
+/* .chartbox{
   position: relative;
   width: 100%;
   margin-right: auto;
   margin-left: auto;
-}
-.chart {
+} */
+/* .chart {
   float:left;
   width: 33.33%;
   height: 400px;
   padding: 15px;
   
-}
+} */
 
-.chartbox:after {
+/* .chartbox:after {
   content: "";
   display: table;
   clear: both;
-}
+} */
 
 .column {
   float: left;

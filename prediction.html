@@ -1,75 +1,49 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
+<html lang= "en">
 <head>
-	<!-- add title -->
-	<h3>Average Rating of Board Games Across the US</h3>
-    <!-- import required libraries here -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Team032 Project</title>
+    <script src="https://d3js.org/queue.v1.min.js"></script>
+    <script src="./lib/topojson.v2.min.js"></script>
+    <script src="https://unpkg.com/d3-simple-slider"></script>
     <script type="text/javascript" src="./lib/d3.v5.min.js"></script>
     <script type="text/javascript" src="./lib/d3-dsv.min.js"></script>
     <script type="text/javascript" src="./lib/d3-legend.min.js"></script>
     <script type="text/javascript" src="./lib/d3-tip.min.js"></script>
-	<style>
-		/* define CSS rules here */
-	    #tooltip {
-                position: absolute;
-                width: 200px;
-                height: auto;
-                padding: 10px;
-                background-color: white;
-                -webkit-border-radius: 10px;
-                -moz-border-radius: 10px;
-                border-radius: 10px;
-                -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
-                -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
-                box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
-                pointer-events: none;
-        }
-        #tooltip.hidden {
-                display: none;
-        }
-        #tooltip p {
-                margin: 0;
-                font-family: sans-serif;
-                font-size: 16px;
-                line-height: 20px;
-                color: white;
-        }
-        #tipDiv {
-            color: white;
-            font-size: 14px;
-        }
-        .d3-tip {
-            line-height: 1.5;
-            font-weight: 400;
-            font-family:"avenir next", Arial, sans-serif;
-            padding: 6px;
-            background: rgba(0, 0, 0, 0.6);
-            color: white;
-            border-radius: 1px;
-            pointer-events: none;
-            }
-        .details{
-              color:#FFA500;
-            }
-	</style>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Source+Sans+Pro&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="main.css">
 </head>
 
-
 <body>
-    <!-- Add heading for the visualization -->
+    <div id="page-container">
+        <div class="header">
+            <h1>The Economic Impact Caused by COVID-19 on People’s Life </h1>
+        </div>
 
-	<!-- Create dropdown element here. Options should be added after reading in game file, they should not be created here.-->
-	<div>
-        Select Metric:
-        <select id="selectButton"></select>
-    </div>
+        <!---------------------- Main Conten starts here -------------------------->
+        <div id="content-wrap">
+        <!---------------------- For Nav Bar -------------------------->
+        <div class="topnav">
+            <a href="about.html">About</a>
+            <a href="#">Demo</a>
+            <a href="prediction.html">Prediction for 2021</a>
+            <a href="index.html">Visualization for 2020</a>
+        </div>
+        <!---------------------- Map -------------------------->
+        <div>
+            Select Metric:
+            <select id="selectButton"></select>
+        </div>
 
-    <!-- append visualization svg to this div-->
-    <div id="usmap" class="svg-container"></div>
+        <div id="usmap">
 
-    <script>
-                var alldata = d3.csv('./data/combined_feb21_prediction.csv');
-                var usmap = d3.json('us.json');
+            <script>
+                var alldata = d3.csv('./combined_feb21_prediction.csv');
+                var usmap = d3.json('usmap.json');
                 var defaultGame = 'CPI';
 
                 // enter code to define margin and dimensions for svg
@@ -177,7 +151,7 @@
                                  }
                                  tooltip.offset([-10, 0])
                                         .html(function(d) {
-                                            if (METRIC_NAME !== 'Housing Price') {
+                                          if (METRIC_NAME !== 'Housing Price') {
                                                 return "<strong class='details'>State: </strong>" +
                                               "<span>" + d.properties.name + "<br></span>" +
                                               "<strong class='details'>Actual </strong>" + METRIC_NAME + "<strong> is: </strong>" + Math.round(parseFloat(REAL_METRIC_VALUE)*10000)/100 +'%' + "<br>" +
@@ -186,9 +160,9 @@
                                             } else {
                                                 return "<strong class='details'>State: </strong>" +
                                               "<span>" + d.properties.name + "<br></span>" +
-                                              "<strong class='details'>Actual </strong>" + METRIC_NAME + "<strong> is: </strong>" + Math.round(parseFloat(REAL_METRIC_VALUE)*100)/100 + "<br>" +
-                                              "<strong class='details'>Predicted </strong>" + METRIC_NAME + "<strong> is: </strong>" + Math.round(parseFloat(PREDICT_METRIC_VALUE)*100)/100 + "<br>" +
-                                              "<strong class='details'>Prediction Error is: </strong>" + Math.round(Math.abs(REAL_METRIC_VALUE - PREDICT_METRIC_VALUE)*100)/100;
+                                              "<strong class='details'>Actual </strong>" + METRIC_NAME + "<strong> is: </strong>" + '$' + Math.round(parseFloat(REAL_METRIC_VALUE)*100)/100 + "<br>" +
+                                              "<strong class='details'>Predicted </strong>" + METRIC_NAME + "<strong> is: </strong>" + '$' + Math.round(parseFloat(PREDICT_METRIC_VALUE)*100)/100 + "<br>" +
+                                              "<strong class='details'>Prediction Error is: </strong>" + '$' + Math.round(Math.abs(REAL_METRIC_VALUE - PREDICT_METRIC_VALUE)*100)/100;
                                             }
                                         });
                                  tooltip.show(data);
@@ -249,7 +223,21 @@
 
 
             </script>
-
+            <!-- state name == chart, select date == timeline -->
+            <div class ="tooltip">
+                <div class="title">
+                    <div class = "name"></div>
+                    <div class = "date"></div>
+                </div>
+            </div>
+        </div>
+        <!---------------------- All main content above -------------------------->
+        </div>
+        <footer id="footer">
+            <p>Produced by Team032:Yinghai Yu, Lifei Xu, Ke Wang, Qichen Yu, Hang Yang</p>
+        </footer>
+      </div>
 </body>
+
 
 </html>
