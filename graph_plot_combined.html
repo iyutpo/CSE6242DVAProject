@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<head>
+  <title></title>
+  <meta charset="utf-8">
+  <script type="text/javascript" src="../lib/d3.v5.min.js"></script>
+  <script type="text/javascript" src="../lib/d3-dsv.min.js"></script>
+  <script src="https://unpkg.com/d3-simple-slider"></script>
+  <script src="https://d3js.org/queue.v1.min.js"></script>
+  <script src="https://d3js.org/topojson.v1.min.js"></script>
+  <script src="./lib/d3-tip.min.js"></script>
+  <script type="text/javascript" src="../lib/d3-legend.min.js"></script>
+
+  <style>
+  .legend {
+    font-size: 10px;
+    font-weight: ;
+    text-anchor: middle;}
+
+	.big_node {
+		r: 8 !important}
+	
+	.axis { font: 14px sans-serif; }
+	#plot1, #plot2, #plot3
+	{
+		display:inline;
+	}
+	
+    /* Tooltip CSS */
+    .d3-tip {
+    line-height: 1.5;
+    font-weight: 400;
+    font-family:"avenir next", Arial, sans-serif;
+    padding: 6px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #FFA500;
+    border-radius: 1px;
+    pointer-events: none;
+    }
+
+    /* Creates a small triangle extender for the tooltip */
+    .d3-tip:after {      
+      box-sizing: border-box;
+      display: inline;
+      font-size: 8px;
+      width: 100%;
+      line-height: 1.5;
+      color: rgba(0, 0, 0, 0.6);
+      position: absolute;
+      pointer-events: none;
+      
+    }
+
+    /* Northward tooltips */
+    .d3-tip.n:after {
+      content: "\25BC";
+      margin: -1px 0 0 0;
+      top: 100%;
+      left: 0;
+      text-align: center;
+    }
+
+    /* Eastward tooltips */
+    .d3-tip.e:after {
+      content: "\25C0";
+      margin: -4px 0 0 0;
+      top: 50%;
+      left: -8px;
+    }
+
+    /* Southward tooltips */
+    .d3-tip.s:after {
+      content: "\25B2";
+      margin: 0 0 1px 0;
+      top: -8px;
+      left: 0;
+      text-align: center;
+    }
+
+    /* Westward tooltips */
+    .d3-tip.w:after {
+      content: "\25B6";
+      margin: -4px 0 0 -1px;
+      top: 50%;
+      left: 100%;
+    }
+</style>
+</head>
+	
+<body>
+
+	<div id="map"></div>
+	<div id="slider"></div>
+	<div id="subtitle"></div>
+	<div id="plot1"></div>
+	<div id="plot2"></div>
+	<div id="plot3"></div>
+<script>
+// set the tip 
+format=d3.format(",.2f") 
+var tip = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([-10, 0])
+            .html(function(d) {
+              return "<strong>State: </strong><span class='details'>" + d.properties.name + "<br></span>" + "<strong>Average Covid-19 Transmission Rate: </strong><span class='details'>" +format(d.price) +"</span>";
+            })
+var path = d3.geoPath().projection(scale(0.6));; 
+var color_map = d3.scaleQuantize()
+    .domain([0,3])
+    .range([  "rgb(107,174,214)",  "#fde391", "#fdc44f", "#fb9b2a", "#ec6f15",
+            "#cc4c02", '#993504', '#662606', '#332505']);
+
+// Set the dimensions of the canvas / graph
+var margin = {top: 60, right: 20, bottom: 50, left: 100},
+    width = 350 - margin.left - margin.right,
+    height =300 - margin.top - margin.bottom;
+
+var margin2 = {top: 50, right: 20, bottom: 50, left: 100},
+    width2 = 900 - margin2.left - margin2.right,
+    height2 =400 - margin2.top - margin2.bottom;
+
+// Adds the svg canvas
+var svg_map = d3.select("#map")
+    .append("svg")
+        .attr("width", width2 + margin2.left + margin2.right)
+        .attr("height", height2 + margin2.top + margin2.bottom)
+		.append("g")
+		.attr('class', 'map')
+        .attr("transform",
+              "translate(" + margin2.left + "," + margin2.top + ")");
+    svg_map.call(tip);
+	svg_map.append("text")
+		.attr("class","title")
+		.text("Covid-19 Transmission Condition in the US in 2020~2021")
+		.style("font-size","20px")
+		.style("font-weight", "bold")
+		.attr("transform","translate(" + (width/2-100) + "," + (-12) + ")");
+		
+var svg_title = d3.select("#subtitle")
+    .append("svg")
+        .attr("width", 1000)
+        .attr("height", 50)
+		.append("g")
+		.attr('class', 'map')
+        .attr("transform",
+              "translate(" + margin2.left + "," + margin2.top + ")");
+
+var svg = d3.select("#plot1")
+    .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+        .attr("transform",
+              "translate(" + margin.left + "," + margin.top + ")");
+			  		  
+var svg2 = d3.select("#plot2")
+    .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+        .attr("transform",
+              "translate(" + margin.left + "," + margin.top + ")");		
+
+var svg3 = d3.select("#plot3")
+    .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+        .attr("transform",
+              "translate(" + margin.left + "," + margin.top + ")");					  
+			  
+
+var parser = d3.timeParse("%Y-%m-%d")
+
+const title={"price":"House Price",
+"CPI":"CPI Index",
+"unemployment":"Unemployment Rate"}
+
+const label_y={"price":"House price($)",
+"CPI":"CPI Index(%)",
+"unemployment":"Unemployment Rate(%)"}
+
+const colors={"price":'#e41a1c',
+"CPI":'#984ea3',
+"unemployment":'#a65628'}
+
+const us=d3.json("us.json");
+const data_all=d3.dsv(",","combined_data_new.csv",function(d){
+
+  return {
+    rt: +d.Rt_mean,
+    state: d.state,
+    price: +d["Re_price"],
+	date: parser(d["date"]),
+	CPI: +d["CPI_12mo"],
+	unemployment:+d.Ur_rate}
+
+})
+Promise.all([us,data_all]
+	// enter code to read files
+	
+).then(
+		values => (ready(null, values[0], values[1]))
+	// enter code to call ready() with required arguments
+);
+
+function ready(error,us, data) {
+
+  var data2 = topojson.feature(us, us.objects.states).features
+  
+	const n=data.length
+	var states=[]
+	var dates=[]	
+	
+	for(i=0;i<n;i++){
+	if (!states.includes(data[i].state)){
+	states.push(data[i].state)}
+	if (!isDateInArray(data[i].date, dates)) {
+    dates.push(data[i].date);
+  }}
+  //plot default map with data in Jan.2020
+  data_safe=data.filter(function(d){return d.date.getTime()==d3.min(dates).getTime()})
+  draw_map(data2,data_safe,data) 
+ // add slider
+	var sliderSimple = d3
+	.sliderHorizontal()
+	.min(d3.min(dates))
+	.max(d3.max(dates))
+	.step(1000*60*60*24*30)
+    .width(900)
+    .tickFormat(d3.timeFormat('%m-%Y'))
+	.displayValue(false)
+	.ticks(13)
+    .default(dates[0])
+    .on('onchange', val => {
+     d3.select('p#value-time').text(d3.timeFormat('%m-%Y')(val));
+	  var i;
+	  const min=7
+	  target_date=dates[0]
+	  for (i = 0; i < dates.length; i++) {
+		  diff=Math.abs((dates[i]-val)/(1000 * 3600 * 24))
+		  
+		  if (diff<min){
+		  target_date=dates[i]
+		  }	
+		}
+	  new_map_data=data.filter(function(d){return d.date.getTime()==target_date.getTime()})
+	  update_map(data2,new_map_data,data)
+	  update_node(data0,target_date)	
+    });
+
+	var gSimple = d3
+		.select('div#slider')
+		.append('svg')
+		.attr('width', 900)
+		.attr('height', 100)
+		.append('g')
+		.attr('transform', 'translate(30,30)');
+
+	gSimple.call(sliderSimple);
+	
+    data0=data.filter(function(d){return d.state=="Maine"})
+	line_graph(data0,svg, "CPI")
+	line_graph(data0,svg2,"unemployment")
+	line_graph(data0,svg3,"price")
+	svg_title.append("text")
+		.attr("class","title")
+		.text("The change of CPI, Unemployment rate and Housing Market in Maine in 2020~2021")
+		.style("font-size","20px")
+		.style("font-weight", "bold")
+		.attr("transform","translate(" + (width/2-100) + "," + (-12) + ")");
+}
+
+function draw_map(data2,map_data,data){
+	var priceByName = {};
+
+	map_data.forEach(function(d) { priceByName[d.state] = +d.rt;});
+  
+	data2.forEach(function(d) { d.price = priceByName[d.properties.name] });
+	svg_map.append("g")
+		.attr("class", "countries")
+		.selectAll("path")
+		.data(data2)
+		.enter().append("path")
+		.attr("d", path)
+		.style("fill", function(d) { return color_map(priceByName[d.properties.name]); })
+		.style('stroke', 'white')
+		.style('stroke-width', 1.5)
+		.style("opacity",0.8)
+      // tooltips
+        .style("stroke","white")
+        .style('stroke-width', 0.3)
+        .on('mouseover',function(d){
+		tip.show(d);
+		var area_name=d.properties.name
+		
+		data1=data.filter(function(d){return d.state==area_name})
+		data0=data1
+		update(data1)
+		update_title(area_name)
+          d3.select(this)
+            .style("opacity", 1)
+            .style("stroke","white")
+            .style("stroke-width",3);
+        })
+        .on('mouseout', function(d){
+		console.log(d)
+          tip.hide(d);
+          d3.select(this)
+            .style("opacity", 0.8)
+            .style("stroke","white")
+            .style("stroke-width",0.3);
+        });
+		
+		svg_map.append("g")
+					.attr("class", "quantile")
+					.attr("transform", "translate(" + (width2-100) + "," + margin2.top + ")");
+				
+				var legendQuantl = d3.legendColor()
+										.scale(color_map)
+										.cells(4)
+										.labelFormat(d3.format('.2f'))	;
+
+				d3.select(".quantile").call(legendQuantl);
+}
+
+function scale (scaleFactor) {
+    return d3.geoTransform({
+        point: function(x, y) {
+            this.stream.point(x * scaleFactor, y  * scaleFactor);
+        }
+    });
+}
+
+
+function update(data1){
+				svg.selectAll("*").remove();
+				svg2.selectAll("*").remove();
+				svg3.selectAll("*").remove();
+				line_graph(data1,svg, "CPI")
+				line_graph(data1,svg2,"unemployment")
+				line_graph(data1,svg3,"price")	
+			}
+
+function update_node(data,target_date){
+				svg.selectAll("circle").remove();
+				svg2.selectAll("circle").remove();
+				svg3.selectAll("circle").remove();
+				add_node(data, svg, "CPI",target_date)
+				add_node(data, svg2, "unemployment",target_date)
+				add_node(data, svg3, "price",target_date)
+			}
+			
+function update_map(data2,map_data,data){
+	svg_map.selectAll(".map").remove();
+	draw_map(data2,map_data,data)
+	}
+
+
+			
+function update_title(area_name){
+	svg_title.selectAll("*").remove();
+	svg_title.append("text")
+		.attr("class","title")
+		.text("The Change of CPI, Unemployment Rate and Housing Market in " +area_name+ "in 2020~2021")
+		.style("font-size","20px")
+		.style("font-weight", "bold")
+		.attr("transform","translate(" + (width/2-100) + "," + (-12) + ")");}
+
+
+
+
+
+
+
+
+
+
+
+
+function add_node(data, svg, column,target_date){
+
+	var x1 = d3.scaleTime()
+      .domain(d3.extent(data, function(d) { return d.date; }))
+      .range([ 0, width ]);
+	
+	if( column=='CPI'){
+    // Add Y axis
+    var y1 = d3.scaleLinear()
+      .domain(d3.extent(data, function(d) { return d[column]; }))
+      .range([ height ,0]);}
+	  else{ var y1 = d3.scaleLinear()
+      .domain([0,d3.max(data, function(d) { return d[column]; })])
+      .range([ height ,0]);}
+	dot=data.filter(function(d){return d.date.getTime()==target_date.getTime()})
+    svg.selectAll("dot")
+        .data(dot)
+    .enter().append("circle")
+        .attr("r", 3)
+        .attr("cx", function(d){return x1(d.date)})
+        .attr("cy", function(d){return y1(d[column])})
+		.style("fill","red")
+ }
+
+
+
+function line_graph(data,svg, column){
+
+	var x1 = d3.scaleTime()
+      .domain(d3.extent(data, function(d) { return d.date; }))
+      .range([ 0, width ]);
+    svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+	  .call(d3.axisBottom(x1).tickFormat(d3.timeFormat("%m-%Y")).ticks(d3.timeMonth.every(3)));
+
+	if( column=='CPI'){
+    // Add Y axis
+    var y1 = d3.scaleLinear()
+      .domain(d3.extent(data, function(d) { return d[column]; }))
+      .range([ height ,0]);}
+	  else{ var y1 = d3.scaleLinear()
+      .domain([0,d3.max(data, function(d) { return d[column]; })])
+      .range([ height ,0]);}
+    svg.append("g")
+      .call(d3.axisLeft(y1));
+
+    // Add the line
+    svg.append("path")
+      .datum(data)
+      .attr("fill", "none")
+      .attr("stroke", function(d) {return colors[column]})
+      .attr("stroke-width", 1.5)
+      .attr("d", d3.line()
+        .x(function(d) { return x1(d.date) })
+        .y(function(d) { return y1(d[column]) })
+        )
+
+	svg.append("text")
+			.attr("id","x_axis_label")	  
+			.attr("transform",
+				"translate(" + (width/2) + " ," + 
+							  -5 + ")")
+			.style("text-anchor", "middle")
+			.text(function(d) { return title[column] });
+	
+	var offset=5-margin.top
+	if (column=="price"){offset=0-margin.top-5}
+	svg.append("text")
+			  .attr("id","y_axis_label")
+			  .attr("transform", "rotate(-90)")
+			  .attr("y", offset)
+			  .attr("x",0 - height/2)
+			  .attr("dy", "1em")
+			  .style("text-anchor", "middle")
+			  .text(function(d) { return label_y[column] });  			  
+ }
+
+function isDateInArray(needle, haystack) {
+  for (var i = 0; i < haystack.length; i++) {
+    if (needle.getTime() === haystack[i].getTime()) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
+
+
+
+
+</script>
+
+</body>
