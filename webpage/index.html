@@ -135,7 +135,7 @@
                 "CPI":'#984ea3',
                 "unemployment":'#a65628'}
 
-                var us=d3.json("usmap.json");
+                var us=d3.json("../us.json");
                 var data_all=d3.dsv(",","./data/combined_data_new.csv",function(d){
                   return {
                     rt: +d.Rt_mean,
