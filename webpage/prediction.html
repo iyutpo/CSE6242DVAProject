@@ -161,9 +161,9 @@
                                             } else {
                                                 return "<strong class='details'>State: </strong>" +
                                               "<span>" + d.properties.name + "<br></span>" +
-                                              "<strong class='details'>Actual </strong>" + METRIC_NAME + "<strong> is: </strong>" + Math.round(parseFloat(REAL_METRIC_VALUE)*100)/100 + "<br>" +
-                                              "<strong class='details'>Predicted </strong>" + METRIC_NAME + "<strong> is: </strong>" + Math.round(parseFloat(PREDICT_METRIC_VALUE)*100)/100 + "<br>" +
-                                              "<strong class='details'>Prediction Error is: </strong>" + Math.round(Math.abs(REAL_METRIC_VALUE - PREDICT_METRIC_VALUE)*100)/100;
+                                              "<strong class='details'>Actual </strong>" + METRIC_NAME + "<strong> is: </strong>" + '$' + Math.round(parseFloat(REAL_METRIC_VALUE)*100)/100 + "<br>" +
+                                              "<strong class='details'>Predicted </strong>" + METRIC_NAME + "<strong> is: </strong>" + '$' + Math.round(parseFloat(PREDICT_METRIC_VALUE)*100)/100 + "<br>" +
+                                              "<strong class='details'>Prediction Error is: </strong>" + '$' + Math.round(Math.abs(REAL_METRIC_VALUE - PREDICT_METRIC_VALUE)*100)/100;
                                             }
                                         });
                                  tooltip.show(data);
