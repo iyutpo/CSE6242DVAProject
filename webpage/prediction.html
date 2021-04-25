@@ -69,11 +69,12 @@
                 var tooltip = d3.select("body")
                                 .append("div")
                                 .style("height", "80px")
-                                .style("width", "240px")
+                                .style("width", "280px")
+                                .attr('font-size', '8px')
                                 .style("position", "absolute")
                                 .style('visibility', 'hidden')
                                 .attr('id', 'tooltip')
-                                .style("background-color", "grey")
+                                .style("background-color", "lightgrey")
                                 .html('<div id="tipDiv">Country: </div>');
 
                 // enter code to define projection and path required for Choropleth
@@ -145,7 +146,7 @@
                              .append('path')
                              .on('mouseover', function(data, i) {
                                  COUNTY = data.properties.name;
-                                 METRIC_NAME = selectedMetric;
+                                 METRIC_NAME = d3.select('#selectButton').node().value;;
                                  if (METRIC_NAME === 'CPI') {
                                      REAL_METRIC_VALUE = data.properties.CPI;
                                      PREDICT_METRIC_VALUE = data.properties.CPI_predict;
@@ -189,13 +190,13 @@
                                  switch (selectedMetric) {
                                      case 'CPI':
                                          quantileScale.domain([0.4, 2]);
-                                         return d.properties.CPI ? quantileScale(d.properties.CPI) : 'grey';
+                                         return d.properties.CPI ? quantileScale(d.properties.CPI_predict) : 'grey';
                                      case 'Housing Price':
                                          quantileScale.domain([110000, 700000])
-                                         return d.properties.RE ? quantileScale(d.properties.RE) : 'grey';
+                                         return d.properties.RE ? quantileScale(d.properties.RE_predict) : 'grey';
                                      case 'Unemployment Rate':
                                          quantileScale.domain([2, 15])
-                                         return d.properties.UR ? quantileScale(d.properties.UR) : 'grey';
+                                         return d.properties.UR ? quantileScale(d.properties.UR_predict) : 'grey';
                                  }}
                                  )
                     appending.exit().remove();
@@ -206,23 +207,13 @@
                     var legend;
                     if (selectedMetric === 'Housing Price') {
                         legend = d3.legendColor()
-                                   .labelFormat(d3.format('c'))
+                                   .labelFormat(d3.format('~s'))
                                    .useClass(true)
                                    .shape('rect')
                                    .orient('vertical')
                                    .scale(quantileScale);
                         svg.select('.legendQuant').call(legend)
                             .append('text').text('Unit: USD')
-                            .attr('font-size', '15px');
-                    } else if (selectedMetric === 'CPI') {
-                        legend = d3.legendColor()
-                                   .labelFormat(d3.format('.2f'))
-                                   .useClass(true)
-                                   .shape('rect')
-                                   .orient('vertical')
-                                   .scale(quantileScale);
-                        svg.select('.legendQuant').call(legend)
-                            .append('text').text('Unit: %')
                             .attr('font-size', '15px');
                     } else {
                         legend = d3.legendColor()

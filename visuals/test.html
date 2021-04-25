@@ -82,10 +82,12 @@
                                 .append("div")
                                 .style("height", "80px")
                                 .style("width", "240px")
+                                .attr('font-size', '8px')
+                                .attr('fill', 'black')
                                 .style("position", "absolute")
                                 .style('visibility', 'hidden')
                                 .attr('id', 'tooltip')
-                                .style("background-color", "grey")
+                                .style("background-color", "lightgrey")
                                 .html('<div id="tipDiv">Country: </div>');
 
                 // enter code to define projection and path required for Choropleth
@@ -201,13 +203,13 @@
                                  switch (selectedMetric) {
                                      case 'CPI':
                                          quantileScale.domain([0.4, 2]);
-                                         return d.properties.CPI ? quantileScale(d.properties.CPI) : 'grey';
+                                         return d.properties.CPI ? quantileScale(d.properties.CPI_predict) : 'grey';
                                      case 'Housing Price':
                                          quantileScale.domain([110000, 700000])
-                                         return d.properties.RE ? quantileScale(d.properties.RE) : 'grey';
+                                         return d.properties.RE ? quantileScale(d.properties.RE_predict) : 'grey';
                                      case 'Unemployment Rate':
                                          quantileScale.domain([2, 15])
-                                         return d.properties.UR ? quantileScale(d.properties.UR) : 'grey';
+                                         return d.properties.UR ? quantileScale(d.properties.UR_predict) : 'grey';
                                  }}
                                  )
                     appending.exit().remove();
@@ -226,6 +228,10 @@
                         svg.select('.legendQuant').call(legend)
                             .append('text').text('Unit: USD')
                             .attr('font-size', '15px');
+                        svg.selectAll('.swatch')
+                        .style('fill', function(d, i) {
+                            return redColors[i];
+                        })
                     } else if (selectedMetric === 'CPI') {
                         legend = d3.legendColor()
                                    .labelFormat(d3.format('.2f'))
@@ -236,6 +242,10 @@
                         svg.select('.legendQuant').call(legend)
                             .append('text').text('Unit: %')
                             .attr('font-size', '15px');
+                        svg.selectAll('.swatch')
+                        .style('fill', function(d, i) {
+                            return redColors[i];
+                        })
                     } else {
                         legend = d3.legendColor()
                                    .labelFormat(d3.format('.2f'))
@@ -246,6 +256,10 @@
                         svg.select('.legendQuant').call(legend)
                             .append('text').text('Unit: %')
                             .attr('font-size', '15px');
+                        svg.selectAll('.swatch')
+                        .style('fill', function(d, i) {
+                            return redColors[i];
+                        })
                     }
 
                     svg.selectAll('.swatch')
