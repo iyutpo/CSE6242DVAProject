@@ -182,8 +182,8 @@ const colors={"price":'#e41a1c',
 "CPI":'#984ea3',
 "unemployment":'#a65628'}
 
-const us=d3.json("us.json");
-const data_all=d3.dsv(",","combined_data_new.csv",function(d){
+var us=d3.json("us.json");
+var data_all=d3.dsv(",","combined_data_new.csv",function(d){
 
   return {
     rt: +d.Rt_mean,
