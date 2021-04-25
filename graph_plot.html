@@ -89,7 +89,7 @@ const colors={"price":'#e41a1c',
 "CPI":'#984ea3',
 "unemployment":'#a65628'}
 
-d3.dsv(",","combined_data.csv",function(d){
+d3.dsv(",","combined_data_new.csv",function(d){
 
   return {
     state: d.state,
@@ -131,11 +131,9 @@ d3.dsv(",","combined_data.csv",function(d){
 		  
 		  if (diff<min){
 		  target_date=dates[i]
-		  console.log(dates[i])}
+		  console.log(dates[i])}	
 		}	
-	  console.log(data0)
-	  console.log(target_date)
-	  console.log(data0.filter(function(d){return d.date.getTime()==target_date.getTime()}))
+	  update_node(data0,target_date)	
     });
 
 	var gSimple = d3
@@ -164,7 +162,7 @@ d3.dsv(",","combined_data.csv",function(d){
 		data0=data1
 		update(data1)
 			})
-
+		
     data0=data.filter(function(d){return d.state=="Maine"})
 	line_graph(data0,svg, "CPI")
 	line_graph(data0,svg2,"unemployment")
@@ -183,8 +181,25 @@ function update(data1){
 				line_graph(data1,svg3,"price")	
 			}
 
+function update_node(data,target_date){
+				svg.selectAll("circle").remove();
+				svg2.selectAll("circle").remove();
+				svg3.selectAll("circle").remove();
+				add_node(data, svg, "CPI",target_date)
+				add_node(data, svg2, "unemployment",target_date)
+				add_node(data, svg3, "price",target_date)
+			}
 
-function add_node(data, svg, columns){
+
+
+
+
+
+
+
+
+
+function add_node(data, svg, column,target_date){
 
 	var x1 = d3.scaleTime()
       .domain(d3.extent(data, function(d) { return d.date; }))
@@ -198,13 +213,14 @@ function add_node(data, svg, columns){
 	  else{ var y1 = d3.scaleLinear()
       .domain([0,d3.max(data, function(d) { return d[column]; })])
       .range([ height ,0]);}
-	  
+	dot=data.filter(function(d){return d.date.getTime()==target_date.getTime()})
     svg.selectAll("dot")
-        .data(d.values)
+        .data(dot)
     .enter().append("circle")
         .attr("r", 3)
-        .attr("cx", function(d){return x(d.key)})
-        .attr("cy", function(d){return y(d.value)})			  
+        .attr("cx", function(d){return x1(d.date)})
+        .attr("cy", function(d){return y1(d[column])})
+		.style("fill","red")
  }
 
 
