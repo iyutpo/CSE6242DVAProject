@@ -20,7 +20,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../../LANGUAGE/IntelliJUltimate/JavaDataStructAlgor/yinghai/Algorithm/src/KMP/steps" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -33,6 +33,7 @@
       <option name="presentableId" value="Default" />
       <updated>1619378021907</updated>
       <workItem from="1619378023187" duration="806000" />
+      <workItem from="1620693276940" duration="26000" />
     </task>
     <servers />
   </component>
@@ -40,9 +41,9 @@
     <option name="version" value="2" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="347" y="275" key="FileChooserDialogImpl" timestamp="1619392305152">
+    <state x="347" y="275" key="FileChooserDialogImpl" timestamp="1620693303570">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="347" y="275" key="FileChooserDialogImpl/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1619392305152" />
+    <state x="347" y="275" key="FileChooserDialogImpl/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1620693303570" />
   </component>
 </project>
